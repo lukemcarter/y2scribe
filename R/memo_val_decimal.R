@@ -29,12 +29,33 @@ memo_val_decimal <- function(
     values,
     dataset = responses,
     wt = weights_final_trimmed,
+    group_var = NULL,
+    group_values = NULL,
     ...) {
 
-  dataset %>%
+  dataset <- dataset %>%
+      dplyr::group_by({{group_var}})
+
+  if (dplyr::is_grouped_df(dataset) & is.null(group_values)) {
+    stop("If you provide a group_var, you must also provide group_values")
+  }
+
+  if (!dplyr::is_grouped_df(dataset) & !is.null(group_values)) {
+    stop("If you provide group_values, you must also provide a group_var.")
+  }
+
+  frequencies <-
+    dataset %>%
     y2clerk::freqs({{question}},
                    wt = {{wt}},
-                   ...) %>%
+                   ...)
+
+  if(dplyr::is_grouped_df(dataset)) {
+    frequencies <- frequencies %>%
+      dplyr::filter(.data$group_var %in% group_values)
+  }
+
+  frequencies %>%
     dplyr::filter(.data$value %in% c(values)) %>%
     dplyr::select(.data$value, .data$result) %>%
     dplyr::summarize(result = sum(.data$result)) %>%
