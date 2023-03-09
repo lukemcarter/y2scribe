@@ -9,6 +9,8 @@ memo_val_points(
   values,
   dataset = responses,
   wt = weights_final_trimmed,
+  group_var = NULL,
+  group_values = NULL,
   ...
 )
 }
@@ -20,6 +22,10 @@ memo_val_points(
 \item{dataset}{A dataset of survey responses}
 
 \item{wt}{A numeric variable of case weights}
+
+\item{group_var}{Variable that specifies a subgroup}
+
+\item{group_values}{Subgroup value(s)}
 
 \item{...}{Additional arguments to pass to underlying freqs call}
 }

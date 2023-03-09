@@ -6,6 +6,8 @@
 #' @param dataset A dataset of survey responses
 #' @param wt A numeric variable of case weights
 #' @param ... Additional arguments to pass to underlying freqs call
+#' @param group_var Variable that specifies a subgroup
+#' @param group_values Subgroup value(s)
 #'
 #' @return The weighted percentage points of survey respondents that selected the specified values of the target question
 #' @export
@@ -30,12 +32,16 @@ memo_val_points <- function(
     values,
     dataset = responses,  # Keep this as the third argument to facilitate using the function in f(question, value) format
     wt = weights_final_trimmed,
+    group_var = NULL,
+    group_values = NULL,
     ...) {
 
   memo_val_decimal({{question}},
                    values,
                    dataset = dataset,  # Keep this as the third argument to facilitate using the function in f(question, value) format
                    wt = {{wt}},
+                   group_var = {{group_var}},
+                   group_values = group_values,
                    ...) %>%
     magrittr::multiply_by(100)
 

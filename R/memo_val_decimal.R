@@ -5,6 +5,8 @@
 #' @param dataset A dataset of survey responses
 #' @param wt A numeric variable of case weights
 #' @param ... Additional arguments to pass to underlying freqs call
+#' @param group_var Variable that specifies a subgroup
+#' @param group_values Subgroup value(s)
 #'
 #' @return The weighted decimal value of survey respondents that selected the specified values of the target question
 #' @export
@@ -37,7 +39,7 @@ memo_val_decimal <- function(
       dplyr::group_by({{group_var}})
 
   if (dplyr::is_grouped_df(dataset) & is.null(group_values)) {
-    stop("If you provide a group_var, you must also provide group_values")
+    stop("If you provide a group_var, you must also provide group_values.")
   }
 
   if (!dplyr::is_grouped_df(dataset) & !is.null(group_values)) {
